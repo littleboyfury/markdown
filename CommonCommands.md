@@ -187,9 +187,9 @@ tar -zxvf filename -C /usr/local/java/  //安装到指定目录下
 * 安装jdk
 
   ```shell
-export JAVA_HOME=/root/jdk8
+  export JAVA_HOME=/root/jdk8
   export JRE_HOME=$JAVA_HOME/jre 
-export PATH=$PATH:$JAVA_HOME/bin:$JRE_HOME/bin
+  export PATH=$PATH:$JAVA_HOME/bin:$JRE_HOME/bin
   export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JRE_HOME/lib
   ```
 ```
@@ -406,9 +406,16 @@ redis-cli -p 6379 -h 127.0.0.1
 
 #启动
 ./redis.service ./redis.confi
+
+# 阿里云
+redis-cli -h 6379 -h r-7xvjphhmzxbb6bl00opd.redis.rds.aliyuncs.com
 ```
 
 ### rabbitmq(mac)
+
+docker 安装
+
+https://www.cnblogs.com/angelyan/p/11218260.html
 
 ```shell
 #启动
@@ -454,3 +461,48 @@ conda activate py2
 conda remove -n yourenvname -all移除虚拟环境
 
 python3 -m venv .venv 创建虚拟环境
+
+### MongoDB
+
+https://www.runoob.com/mongodb/mongodb-osx-install.html
+
+### Docker
+
+```shell
+docker build -t node/email-login .
+docker run -itd --name mongo -p 27017:27017 mongo
+docker run -itd --name redis -p 6379:6379 redis
+docker run -itd --name email-login -p 23170:7001 node/email-login
+
+docker network create maimemonet
+docker run -itd --name mongo -p 27017:27017 --network maimemonet --network-alias mongo mongo
+docker run -itd --name redis -p 6379:6379 --network maimemonet --network-alias redis redis
+```
+
+docker切换容器网络
+
+```
+To see what network(s) your container is on, assuming your container is called c1:
+
+$ docker inspect c1 -f "{{json .NetworkSettings.Networks }}"
+To disconnect your container from the first network (assuming your first network is called test-net):
+
+$ docker network disconnect test-net c1
+Then to reconnect it to another network (assuming it's called test-net-2):
+
+$ docker network connect test-net-2 c1
+To check if two containers (or more) are on a network together:
+
+$ docker network inspect test-net -f "{{json .Containers }}"
+```
+
+
+
+### ElasticSearch
+
+```bash
+docker run -d --name elasticsearch -p 9200:9200 -p 9300:9300 -e ES_JAVA_OPTS="-Xms1024m -Xmx1024m" -e "discovery.type=single-node" elasticsearch:7.1.1
+```
+
+https://www.cnblogs.com/fbtop/p/11005469.html
+
